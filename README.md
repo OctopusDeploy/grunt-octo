@@ -37,18 +37,18 @@ grunt.initConfig({
 
 ## API
 
-## src
+### src
 The package file that is to be pushed up to the server.
 
-## Options
+### Options
 
-### options.host
+#### options.host
 Required property that points to the Octopus Server instance the package should be pushed to.
 
-## options.replace
+### options.replace
 Flag to force overwrite of existing packge if one already exists with the same ID and version.
 
-### options.apiKey
+#### options.apiKey
 Key linked to account with `BuiltInFeedPush` permissions. 
 If `options.replace` is set to true and a package with the same ID and version already exists then the `BuiltInFeedAdminister` permission is required.
 
