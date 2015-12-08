@@ -1,0 +1,8 @@
+# Dependencies
+node_modules/
+
+# Dev
+bin/
+tmp/
+.idea
+npm-debug.log

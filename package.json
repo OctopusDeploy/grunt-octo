@@ -1,0 +1,41 @@
+{
+  "name": "grunt-octo",
+  "description": "A Grunt wrapper for octopack library to push projects to Octopus Deploy.",
+  "version": "0.0.11",
+  "homepage": "https://github.com/Robert/empty",
+  "author": "Octopus Deploy <support@octopus.com> (http://octopus.com/)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Robert/empty.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Robert/empty/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/Robert/empty/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-compress": "^0.14.0",
+    "grunt-bump": "^0.6.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.5"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "dependencies": {
+    "@robert.erez/octo-pack": "0.0.2",
+    "chalk": "^1.1.1"
+  }
+}
