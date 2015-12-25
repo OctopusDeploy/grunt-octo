@@ -1,11 +1,3 @@
-/*
- * grunt-octo
- * https://github.com/Robert/empty
- *
- * Copyright (c) 2015 Robert Erez
- * Licensed under the MIT license.
- */
-
 'use strict';
 
 module.exports = function(grunt) {
@@ -15,7 +7,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     octo: {
-      pack: {
+      push: {
         options: {
           host: 'http://localhost',
           apiKey: 'API-T9LQKPDFHOYN3CS3UGEP3A504',
@@ -50,5 +42,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-bump');
 
-  grunt.registerTask('publish', ['compress:main', 'octo:pack', 'bump']);
+  grunt.registerTask('publish', ['compress:main', 'octo:push', 'bump']);
 };
