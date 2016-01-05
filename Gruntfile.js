@@ -2,29 +2,21 @@
 
 module.exports = function(grunt) {
 
-  // Project configuration.
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-
-    octo: {
-      push: {
+    "octo-push": {
         options: {
           host: 'http://localhost',
-          apiKey: 'API-T9LQKPDFHOYN3CS3UGEP3A504',
+          apiKey: 'API-IS5PHRN7VVTMAU8GFXFLA0NXMO',
           replace: true
         },
-        src: '<%= compress.main.options.archive %>'
-      }
+      src: ['./bin/**/*']
     },
-    compress: {
-      main: {
+    "octo-pack": {
+      prod: {
         options: {
-          archive: './bin/<%= pkg.name %>.<%= pkg.version %>.tar.gz',
-          mode: 'tgz'
+          dst: './bin'
         },
-        files: [
-          { src: ['test/**'] }
-        ]
+        src: ['tasks/**/*']
       }
     },
     bump: {
@@ -34,13 +26,16 @@ module.exports = function(grunt) {
         createTag: false,
         push: false
       }
+    },
+    clean: {
+      build: ['./bin/**/*']
     }
-  });
+    });
 
   grunt.loadTasks('tasks');
 
-  grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-bump');
 
-  grunt.registerTask('publish', ['compress:main', 'octo:push', 'bump']);
+  grunt.registerTask('publish',  ['clean', 'octo-pack:prod', 'octo-push', 'bump']);
 };

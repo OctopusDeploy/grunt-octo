@@ -1,14 +1,13 @@
-# grunt-octo
-
+gulp-octo
+===
 > A Grunt wrapper for [octopack](https://github.com/OctopusDeploy/octojs) library to push projects to Octopus Deploy
 
-## Getting Started
-This plugin requires Grunt `~0.4.5`
+## Install
+This plugin requires [Grunt](http://gruntjs.com/) `~0.4.5`
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
-
+Install with [npm](https://npmjs.org/package/grunt-octo)
 ```shell
-npm install grunt-octo --save-dev
+npm install  --save-dev grunt-octo
 ```
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
@@ -17,105 +16,69 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-octo');
 ```
 
-## The "octo" task
+In your project's Gruntfile, add a section named `octo-pack` and `octo-pack` to the data object passed into `grunt.initConfig()`.
 
-### Overview
-In your project's Gruntfile, add a section named `octo` to the data object passed into `grunt.initConfig()`.
+## Options
+### octo-pack
+#### type (optional)
+Optional parameter to define the package type. Valid values are `targz`, `tar`, `zip` or `nupkg`. If not provided this defaults to `targz`.
 
-```js
-grunt.initConfig({
-  octo: {
-    options: {
-      // Task-specific options go here.
-    },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
-});
-```
+#### id (optional)
+Defines the `Id` component of the created package. By default it will extract the name out of `package.json` if present.
 
-## API
+#### version (optional)
+Defines the `version` component of the created package. By default it will extract the version out of `package.json` if present.
 
-### src
-The package file that is to be pushed up to the server.
+#### dst
+The output location for the generated package file.
 
-### Options
-
-#### options.host
+### octo-push
+#### host
 Required property that points to the Octopus Server instance the package should be pushed to.
 
-### options.replace
-Flag to force overwrite of existing packge if one already exists with the same ID and version.
-
-#### options.apiKey
+#### apiKey
 Key linked to account with `BuiltInFeedPush` permissions. 
 If `options.replace` is set to true and a package with the same ID and version already exists then the `BuiltInFeedAdminister` permission is required.
 
+#### replace (optional)
+Flag to force overwrite of existing package if one already exists with the same ID and version.
+
 ## Usage Examples
 
-#### Default Options
-In this example, the default options are used to push a package that is generated from some other process. This example provide the minimum configuration options required to perform the push. 
+#### Combined Pack & Push
+Using both `octo-pack` and `octo-push` the project will first be packaged then then uploaded to the server. 
+Note that the `gulp-contrib-clean` task is run first to ensure no previous packages are still present in the output directory.
 
 ```js
 grunt.initConfig({
-  octo: {
-    options: {
-        host: 'http://octopus-server/',
-        apiKey: 'API-XXXXXXXXX'
-    },
-    src: './bin/myproject.1.1.0.tar'
-  },
-});
-```
-
-#### Pre Packaging
-In this example, the project files are first packaged up using a seperate library, `grunt-contrib-compress` using project details extracted directly from the `project.json` file. Once the package has been pushed the version number is then incremented. 
-
-```js
-grunt.initConfig({
-  octo: {
-    push: {
-      options: {
-        host: 'http://octopus-server/',
-        apiKey: 'API-XXXXXXXXX',
-      },
-      src: '<%= compress.main.options.archive %>'
+    clean: {
+      build: ['./bin/**/*']
     }
-  },
-    compress: {
-      main: {
+    "octo-pack": {
+      prod: {
         options: {
-          archive: './bin/<%= pkg.name %>.<%= pkg.version %>.tar.gz',
-          mode: 'tgz'
+          dst: './bin'
         },
-        files: [
-          { src: ['dist/**'] }
-        ]
+        src: ['**/*', '!src/**/*', '!./gulpfile.js']
       }
-    },
-    bump: {
-      options: {
-        files: ['package.json'],
-        commit: false,
-        createTag: false,
-        push: false
-      }
+    },    
+    "octo-push": {
+        options: {
+          host: 'http://localhost',
+          apiKey: 'API-XXXXXXXXX',
+          replace: true
+        },
+      src: ['./bin/**/*']
     }
-});
-
- grunt.loadNpmTasks('grunt-contrib-compress');
- grunt.loadNpmTasks('grunt-bump');
- grunt.loadNpmTasks('grunt-octo');
- 
- grunt.registerTask('publish', ['compress:main', 'octo:push', 'bump']);
+    });
+  grunt.registerTask('publish',  ['clean', 'octo-pack:prod', 'octo-push']);
 ```
 
 ## License
 
 (MIT License)
 
-Copyright (c) 2015 Octopus Deploy support@octopus.com
+Copyright (c) 2016 Octopus Deploy support@octopus.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
