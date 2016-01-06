@@ -38,14 +38,26 @@ module.exports = function(grunt) {
 
     function pushComplete(err, data) {
       if (err) {
-        grunt.fatal(err);
+        onFail(err);
       } else {
-        grunt.log.ok('Pushed package', chalk.cyan(data.Title + ' v' + data.Version + ' (' + fileSizeString(data.PackageSizeBytes) + ')'), 'to ', chalk.cyan(options.host));
-        if (files.length === 0) {
-          done();
-        } else {
-          pushPackage(files.pop());
-        }
+        onSuccess(data);
+      }
+    }
+
+    function onFail(err) {
+      var msg = err.statusMessage || err.statusCode;
+      if (err && err.body && err.body.Errors && err.body.Errors[0]) {
+        msg = err.body.Errors[0] + ' (' + err.statusCode + ')';
+      }
+      grunt.fatal(msg);
+    }
+
+    function onSuccess(data) {
+      grunt.log.ok('Pushed package', chalk.cyan(data.Title + ' v' + data.Version + ' (' + fileSizeString(data.PackageSizeBytes) + ')'), 'to ', chalk.cyan(options.host));
+      if (files.length === 0) {
+        done();
+      } else {
+        pushPackage(files.pop());
       }
     }
   });
