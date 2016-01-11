@@ -5,15 +5,15 @@ gulp-octo
 ## Install
 This plugin requires [Grunt](http://gruntjs.com/) `~0.4.5`
 
-Install with [npm](https://npmjs.org/package/grunt-octo)
+Install with [npm](https://npmjs.org/package/@octopusdeploy/grunt-octo)
 ```shell
-npm install  --save-dev grunt-octo
+npm install  --save-dev @octopusdeploy/grunt-octo
 ```
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-octo');
+grunt.loadNpmTasks('@octopusdeploy/grunt-octo');
 ```
 
 In your project's Gruntfile, add a section named `octo-pack` and `octo-pack` to the data object passed into `grunt.initConfig()`.

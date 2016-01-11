@@ -1,10 +1,10 @@
 'use strict';
-var octo = require('@robert.erez/octo-pack');
+var octo = require('@octopusdeploy/octopackjs');
 var path = require('path');
 var chalk = require('chalk');
 
 var TASK_NAME = 'octo-push';
-var DESCRIPTION = 'A Grunt wrapper for octopack library to push packages to an Octopus Deploy instance.';
+var DESCRIPTION = 'A Grunt wrapper for octopackjs library to push packages to an Octopus Deploy instance.';
 
 module.exports = function(grunt) {
   grunt.registerMultiTask(TASK_NAME, DESCRIPTION, function () {
@@ -33,6 +33,7 @@ module.exports = function(grunt) {
         octo.push(file, pushOptions(file), pushComplete);
       } catch (err) {
         grunt.fatal(err);
+        done(false);
       }
     }
 
@@ -50,6 +51,7 @@ module.exports = function(grunt) {
         msg = err.body.Errors[0] + ' (' + err.statusCode + ')';
       }
       grunt.fatal(msg);
+      done(false);
     }
 
     function onSuccess(data) {

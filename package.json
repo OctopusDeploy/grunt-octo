@@ -1,7 +1,7 @@
 {
-  "name": "@robert.erez/grunt-octo",
+  "name": "@octopusdeploy/grunt-octo",
   "description": "A Grunt wrapper for octopack library to push projects to Octopus Deploy.",
-  "version": "0.0.33",
+  "version": "0.0.46",
   "author": "Octopus Deploy <support@octopus.com> (http://octopus.com/)",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "gruntplugin"
   ],
   "dependencies": {
-    "@robert.erez/octo-pack": "~0.0.5",
+    "@octopusdeploy/octopackjs": "~0.0.1",
     "chalk": "^1.1.1"
   }
 }
