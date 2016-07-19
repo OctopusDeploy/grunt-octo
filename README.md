@@ -1,6 +1,6 @@
-gulp-octo
+grunt-octo
 ===
-> A Grunt wrapper for [octopack](https://github.com/OctopusDeploy/octojs) library to push projects to Octopus Deploy
+> A Grunt wrapper for [octopack](https://github.com/OctopusDeploy/octopackjs) library to push projects to Octopus Deploy
 
 ## Install
 This plugin requires [Grunt](http://gruntjs.com/) `~0.4.5`
