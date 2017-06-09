@@ -29,6 +29,12 @@ Defines the `Id` component of the created package. By default it will extract th
 #### version (optional)
 Defines the `version` component of the created package. By default it will extract the version out of `package.json` if present.
 
+#### removeParent (optional)
+If set to `true` the parent directory will be removed. The `parentDir` paramenter also needs to be set.
+
+#### parentDir (optional)
+Defines the parent directory to be removed if `removeParent` set to true.
+
 #### dst
 The output location for the generated package file.
 
@@ -57,7 +63,9 @@ grunt.initConfig({
     "octo-pack": {
       prod: {
         options: {
-          dst: './bin'
+          dst: './bin',
+          removeParent: true,
+          parentDir: 'dist'
         },
         src: ['**/*', '!src/**/*', '!./gulpfile.js']
       }
