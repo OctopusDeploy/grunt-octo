@@ -10,16 +10,25 @@ module.exports = function(grunt) {
         var done = this.async(),
             files = grunt.file.expand(this.filesSrc),
             options = this.options({
-                dst: './'
+                dst: './',
+                removeParent: false,
+                parentDir: ''
             });
-        if(files.length === 0) {
+      if(files.length === 0) {
             grunt.log.warn('No packages found.');
             done();
         } else {
             try {
                 var pkg = octo.pack(options.type, {id: options.id, version: options.version});
                 files.forEach(function(f) {
-                    pkg.append(f);
+                    var p = f;
+                    if(options.removeParent && options.parentDir) {
+                        if (p.startsWith(options.parentDir + '/')) {
+                            p = p.replace(options.parentDir + '/', "");
+                            grunt.log.writeln('Filepath renamed to: ' + p);
+                        }
+                    }
+                    pkg.append(p, f);
                 });
                 pkg.toFile(options.dst, function (err, data) {
                     if(err) {
