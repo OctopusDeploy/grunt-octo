@@ -7,9 +7,18 @@ var DESCRIPTION = 'A Grunt wrapper for octopack library to package projects.';
 
 module.exports = function(grunt) {
     grunt.registerMultiTask(TASK_NAME, DESCRIPTION, function() {
-        var done = this.async(),
-            files = grunt.file.expand(this.filesSrc),
-            options = this.options({
+        var done = this.async();
+        /*
+            If a current working directory was supplied in the configuration,
+            use it. Otherwise default to the process current working directory.
+         */
+        var cwd = this.data.cwd ? this.data.cwd : process.cwd();
+        /*
+            Get a reference to the files found by Grunt. These already
+            take the cwd value into account.
+         */
+        var files = this.filesSrc;
+        var options = this.options({
                 dst: './'
             });
         if(files.length === 0) {
@@ -18,8 +27,40 @@ module.exports = function(grunt) {
         } else {
             try {
                 var pkg = octo.pack(options.type, {id: options.id, version: options.version});
-                files.forEach(function(f) {
-                    pkg.append(f);
+                this.filesSrc.forEach(function(f) {
+                    /*
+                        Add the files with the name parameter excluding the cwd, but with the
+                        file parameter being the complete path. This way the resulting package
+                        can exclude directory names.
+
+                        For example, this configuration will result in an archive with files
+                        like /file1.txt.
+
+                        'octo-pack': {
+                             prod: {
+                                options: {
+                                    dst: './bin',
+                                    type: 'zip'
+                                },
+                                src: ['*.txt'],
+                                cwd: 'dist'
+                            }
+                        }
+
+                        Whereas this configuration will result in an archive with files
+                        like /dist/file1.txt.
+
+                        'octo-pack': {
+                             prod: {
+                                options: {
+                                    dst: './bin',
+                                    type: 'zip'
+                                },
+                                src: ['dist/*.txt']
+                            }
+                        }
+                    */
+                    pkg.append(f, cwd + "/" + f);
                 });
                 pkg.toFile(options.dst, function (err, data) {
                     if(err) {
